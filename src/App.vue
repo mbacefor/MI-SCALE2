@@ -1,12 +1,7 @@
 <template>
   <main>
-    <NavBar title="MicroMan POC Vue.js" :bleDeviceName="connectedDeviceName" />
+    <NavBar title="Web BLE Vue App" :bleDeviceName="connectedDeviceName" />
     <Button @clicked="read" text="Connect to Bluetooth" />
-    <Button
-      @clicked="disconnect"
-      id="disconnect"
-      text="Disconnect from Bluetooth"
-    />
     <Button @clicked="start" id="start" text="Start Reading" />
     <Button @clicked="stop" id="stop" text="Stop Reading" />
     <h1>
@@ -15,10 +10,13 @@
     </h1>
     <ProgressBar :output="parseFloat(weight)" />
     <hr />
+    <Button @clicked="save">Save Weighment</Button>
     <div id="batches">
-      <h1>Batches</h1>
+      <h1>Saved Weigments</h1>
       <ul>
-        <li v-for="batch in batches" :key="batch.id">{{ batch.title }}</li>
+        <li v-for="weighment in weighments" :key="weighment.id">
+          {{ weighment.weight }}
+        </li>
       </ul>
     </div>
   </main>
@@ -48,7 +46,7 @@ export default {
     return {
       weight: "0.00",
       connectedDeviceName: null,
-      batches: [],
+      weighments: [],
     };
   },
   beforeMount() {
@@ -60,21 +58,34 @@ export default {
     if (bluetoothDeviceDetected != true) {
       document.querySelector("#start").disabled = true;
       document.querySelector("#stop").disabled = true;
-      document.querySelector("#disconnect").disabled = true;
     }
-
-    this.fetchBatches();
+    this.fetchWeighments();
   },
   methods: {
-    fetchBatches() {
+    fetchWeighments() {
       axios
-        .get("http://localhost:3000/batches")
+        .get("http://localhost:3000/weighments")
         .then((response) => {
           console.log(response);
-          this.batches = response.data;
+          this.weighments = response.data;
         })
         .catch((error) => {
           console.error(error);
+        });
+    },
+    save() {
+      console.log(`Saving ${this.weight}`);
+      const data = {
+        weight: this.weight + " KG",
+      };
+      axios
+        .post("http://localhost:3000/weighments", data)
+        .then((res) => {
+          console.log(res);
+          this.fetchWeighments();
+        })
+        .catch((err) => {
+          console.error(err);
         });
     },
     read() {
@@ -165,7 +176,6 @@ export default {
 
             document.querySelector("#start").disabled = true;
             document.querySelector("#stop").disabled = false;
-            document.querySelector("#disconnect").disabled = false;
           })
           .catch((error) => {
             console.error("[ERROR] Start: " + error);
@@ -192,7 +202,6 @@ export default {
         this.weight = "0.00";
         this.connectedDeviceName = null;
         document.querySelector("#stop").disabled = true;
-        document.querySelector("#disconnect").disabled = true;
       }
     },
   },
