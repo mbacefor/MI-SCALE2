@@ -1,0 +1,7 @@
+{
+  "batches": [
+    { "id": 1, "title": "Batch 1", "content": "Content for Batch 1" },
+    { "id": 2, "title": "Batch 2", "content": "Content for Batch 2" },
+    { "id": 3, "title": "Batch 3", "content": "Content for Batch 3" }
+  ]
+}
