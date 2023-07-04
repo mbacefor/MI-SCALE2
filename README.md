@@ -4,6 +4,8 @@ This project makes use of [Web BLE](https://developer.chrome.com/articles/blueto
 
 This project was inspired by [limhenry](https://github.com/limhenry/) after reading their [article](https://dev.to/henrylim96/reading-xiaomi-mi-scale-data-with-web-bluetooth-scanning-api-1mb9)
 
+![demo](https://github.com/ThomasRog3rs/web-bluetooth-mi-scale/blob/main/demo-image/demo.png?raw=true)
+
 ## Project setup
 
 ```
