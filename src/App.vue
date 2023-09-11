@@ -29,9 +29,9 @@ import ProgressBar from "./components/ProgressBar";
 
 import axios from "axios";
 
-let deviceName = "MIBFS";
-let bleServiceUUID = "0000181b-0000-1000-8000-00805f9b34fb";
-let bleCharacteristic = "00002a9c-0000-1000-8000-00805f9b34fb"; //Body Composition
+let deviceName = "MI SCALE2";
+let bleServiceUUID = "0000181d-0000-1000-8000-00805f9b34fb";
+let bleCharacteristic = "00002a9d-0000-1000-8000-00805f9b34fb"; //Body Composition
 let bluetoothDeviceDetected;
 let gattCharacteristic;
 
@@ -166,11 +166,15 @@ export default {
                 const buffer = new Uint8Array(value.buffer);
                 const ctrlByte1 = buffer[1];
                 const stabilized = ctrlByte1 & (1 << 5);
+                let weight2 =  value.getUint16(1, true)/200;
+
+
                 const weight = ((buffer[12] << 8) + buffer[11]) / 200;
                 const impedance = (buffer[10] << 8) + buffer[9];
 
                 console.log(weight);
-                this.weight = weight;
+                console.log(weight2);
+                this.weight = weight2;
               }
             );
 
