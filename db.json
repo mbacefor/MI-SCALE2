@@ -2,51 +2,58 @@
   "weighments": [
     {
       "id": 1,
-      "weight": "22.4 KG"
+      "weight": "21.3",
+      "dateTime": "2023-09-23 22:00:00"
     },
     {
-      "weight": "60.3 KG",
-      "id": 2
+      "weight": "26.6",
+      "id": 2,
+      "dateTime": "2023-09-23 22:01:00"
     },
     {
-      "weight": "29.15 KG",
-      "id": 3
+      "weight": "42.8",
+      "id": 3,
+      "dateTime": "2023-09-23 22:10:00"
     },
     {
-      "weight": "7.3 KG",
-      "id": 4
+      "weight": "42.65",
+      "id": 4,
+      "dateTime": "2023-09-23 22:15:00"
     },
     {
-      "weight": "0.00 KG",
-      "id": 5
+      "weight": "42.55 ",
+      "id": 5,
+      "dateTime": "2023-09-24T01:24:47.457Z"
     },
     {
-      "weight": "0.00 KG",
+      "weight": "0.00",
+      "dateTime": "2023-09-24T11:48:25.191Z",
       "id": 6
     },
     {
-      "weight": "0.00 KG",
+      "weight": 40.45,
+      "dateTime": "2023-09-24T11:50:24.426Z",
       "id": 7
     },
     {
-      "weight": "0.00 KG",
+      "weight": 39.3,
+      "dateTime": "2023-09-24T12:33:16.686Z",
       "id": 8
     },
     {
-      "weight": "0.00 KG",
+      "weight": 36.75,
+      "dateTime": "2023-09-24T23:30:40.207Z",
       "id": 9
     },
     {
-      "weight": "0.00 KG",
+      "weight": 32.55,
+      "dateTime": "2023-09-25T11:17:19.800Z",
       "id": 10
     },
     {
-      "weight": "82.9 KG",
+      "weight": 30.45,
+      "dateTime": "2023-09-25T18:39:24.912Z",
       "id": 11
-    },
-    {
-      "weight": "75.05 KG",
-      "id": 12
     }
   ]
 }

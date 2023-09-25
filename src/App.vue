@@ -15,7 +15,7 @@
       <h1>Saved Weigments</h1>
       <ul>
         <li v-for="weighment in weighments" :key="weighment.id">
-          {{ weighment.weight }}
+          {{ weighment.dateTime }} : {{ weighment.weight }}
         </li>
       </ul>
     </div>
@@ -74,9 +74,12 @@ export default {
         });
     },
     save() {
+      const d = new Date();
+      d.set
       console.log(`Saving ${this.weight}`);
       const data = {
-        weight: this.weight + " KG",
+        weight: this.weight ,
+        dateTime: d.toISOString(),
       };
       axios
         .post("http://localhost:3000/weighments", data)
