@@ -1,21 +1,20 @@
 <template>
   <main>
-    <NavBar title="Web BLE Vue App" :bleDeviceName="connectedDeviceName" />
+    <NavBar title="Temporizador Monitora" :bleDeviceName="connectedDeviceName" />
     <Button @clicked="read" text="Connect to Bluetooth" />
     <Button @clicked="start" id="start" text="Start Reading" />
     <Button @clicked="stop" id="stop" text="Stop Reading" />
     <h1>
-      weighment from Bluetooth: <span id="weighment">{{ weight }}</span
-      >KG
+      weighment from Bluetooth: <span id="weighment">{{ weight }}</span>KG
     </h1>
     <ProgressBar :output="parseFloat(weight)" />
     <hr />
-    <Button @clicked="save">Save Weighment</Button>
+    <Button @clicked="salvaAtlas">Save Weighment</Button>
     <div id="batches">
       <h1>Saved Weigments</h1>
       <ul>
-        <li v-for="weighment in weighments" :key="weighment.id">
-          {{ weighment.dateTime }} : {{ weighment.weight }}
+        <li v-for="weighment in weighments" :key="weighment._id">
+          {{ weighment.deviceID }} :{{ weighment.dateTime }} : {{ weighment.weight }}
         </li>
       </ul>
     </div>
@@ -34,6 +33,7 @@ let bleServiceUUID = "0000181d-0000-1000-8000-00805f9b34fb";
 let bleCharacteristic = "00002a9d-0000-1000-8000-00805f9b34fb"; //Body Composition
 let bluetoothDeviceDetected;
 let gattCharacteristic;
+let deviceID = null;
 
 export default {
   name: "App",
@@ -59,9 +59,80 @@ export default {
       document.querySelector("#start").disabled = true;
       document.querySelector("#stop").disabled = true;
     }
-    this.fetchWeighments();
+    this.fetchWeighmentsAtlas();
   },
   methods: {
+
+    fetchWeighmentsAtlas() {
+      var axios = require('axios');
+      var data = JSON.stringify({
+        "collection": "medicoes",
+        "database": "monitora",
+        "dataSource": "Cluster0",
+        "filter": {}
+      });
+
+      var config = {
+        method: 'post',
+        url: 'mongo/app/data-vcreo/endpoint/data/v1/action/find',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Request-Headers': '*',
+          'api-key': 'syGEl7ZdHnF6xem4Rn0GVtpHpm1ahFKyuxCffCyv9NpfqkvbrC7bgiyfRFbZKbbB'
+        },
+        data: data
+      };
+
+      axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          return response.data;
+        }).then((data) => {
+          this.weighments = data.documents;
+        }
+        ).catch(function (error) {
+          console.log(error);
+        });
+
+    },
+
+    salvaAtlas() {
+      const d = new Date();
+      console.log(`Saving ${this.weight}`);
+      var axios = require('axios');
+      var data = JSON.stringify({
+        "collection": "medicoes",
+        "database": "monitora",
+        "dataSource": "Cluster0",
+        "document": {
+          "weight": this.weight,
+          "dateTime": d.toISOString(),
+          "deviceID": this.connectedDeviceName
+        }
+      });
+
+      var config = {
+        method: 'post',
+        url: 'mongo/app/data-vcreo/endpoint/data/v1/action/insertOne',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Request-Headers': '*',
+          'api-key': 'syGEl7ZdHnF6xem4Rn0GVtpHpm1ahFKyuxCffCyv9NpfqkvbrC7bgiyfRFbZKbbB'
+        },
+        data: data
+      };
+
+      axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        }).then(() => {
+          this.fetchWeighmentsAtlas();
+        }
+        ).catch(function (error) {
+          console.log(error);
+        });
+
+    },
     fetchWeighments() {
       axios
         .get("http://localhost:3000/weighments")
@@ -75,17 +146,17 @@ export default {
     },
     save() {
       const d = new Date();
-      d.set
       console.log(`Saving ${this.weight}`);
       const data = {
-        weight: this.weight ,
+        weight: this.weight,
         dateTime: d.toISOString(),
+        deviceID: this.connectedDeviceName,
       };
       axios
         .post("http://localhost:3000/weighments", data)
         .then((res) => {
           console.log(res);
-          this.fetchWeighments();
+          this.fetchWeighmentsAtlas();
         })
         .catch((err) => {
           console.error(err);
@@ -106,8 +177,8 @@ export default {
     },
     getDeviceInfo() {
       let options = {
-        optionalServices: [bleServiceUUID.toLowerCase()],
-        filters: [{ name: deviceName }],
+        //optionalServices: [bleServiceUUID.toLowerCase()],
+        filters: [{ services: [bleServiceUUID.toLowerCase()] }],
       };
       console.log(options);
       console.log("requesting BLE device...");
@@ -116,7 +187,7 @@ export default {
         .then((device) => {
           bluetoothDeviceDetected = device;
           console.log(bluetoothDeviceDetected);
-          this.connectedDeviceName = bluetoothDeviceDetected.name;
+          this.connectedDeviceName = bluetoothDeviceDetected.id;
         })
         .catch((err) => {
           console.error("Request device error: " + err);
@@ -169,7 +240,7 @@ export default {
                 const buffer = new Uint8Array(value.buffer);
                 const ctrlByte1 = buffer[1];
                 const stabilized = ctrlByte1 & (1 << 5);
-                let weight2 =  value.getUint16(1, true)/200;
+                let weight2 = value.getUint16(1, true) / 200;
 
 
                 const weight = ((buffer[12] << 8) + buffer[11]) / 200;
@@ -217,22 +288,26 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   background: #fdfdfd;
   font-family: "Nunito", sans-serif;
   font-size: 1rem;
 }
+
 main {
   max-width: 900px;
   margin: auto;
   padding: 0.5rem;
   text-align: center;
 }
+
 h1,
 h2,
 h3,
