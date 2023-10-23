@@ -2,7 +2,7 @@
   <nav>
     <h1>{{ title }}</h1>
     <ul v-if="bleDeviceName">
-      <li>ID Device connected: {{ bleDeviceName }}</li>
+      <li>ID Balança Conectada: {{ bleDeviceName }}</li>
     </ul>
   </nav>
 </template>

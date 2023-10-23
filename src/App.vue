@@ -1,17 +1,17 @@
 <template>
   <main>
     <NavBar title="Temporizador Monitora" :bleDeviceName="connectedDeviceName" />
-    <Button @clicked="read" text="Connect to Bluetooth" />
-    <Button @clicked="start" id="start" text="Start Reading" />
-    <Button @clicked="stop" id="stop" text="Stop Reading" />
+    <Button @clicked="read" text="Conectar Balança (Bluetooth)" />
+    <Button @clicked="start" id="start" text="Iniciar leitura" />
+    <Button @clicked="stop" id="stop" text="Parar leitura" />
     <h1>
-      weighment from Bluetooth: <span id="weighment">{{ weight }}</span>KG
+      Peso da balança: <span id="weighment">{{ weight }}</span>KG
     </h1>
     <ProgressBar :output="parseFloat(weight)" />
     <hr />
     <Button @clicked="salvaAtlas">Save Weighment</Button>
     <div id="batches">
-      <h1>Saved Weigments</h1>
+      <h1>Pesos Salvos</h1>
       <ul>
         <li v-for="weighment in weighments" :key="weighment._id">
           {{ weighment.deviceID }} :{{ weighment.dateTime }} : {{ weighment.weight }}

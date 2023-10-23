@@ -1,5 +1,5 @@
 <template>
-  <h3>Target: {{ targetKG }} KG</h3>
+ <!--<h3>Target: {{ targetKG }} KG</h3>-->
   <span
     class="indicate"
     id="indicate"

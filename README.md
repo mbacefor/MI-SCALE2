@@ -1,30 +1,34 @@
-# vue-ble
+# Temporizador-Monitora
 
-This project makes use of [Web BLE](https://developer.chrome.com/articles/bluetooth/) to connect to a scale. The scale used is the Xiaomi Mi Scale which has been documented [here](https://github.com/wiecosystem/Bluetooth/blob/master/doc/devices/huami.health.scale2.md) by [wiecosystem](https://github.com/wiecosystem).
+Esse projeto tem como objetivo obter o peso registrado em uma balança conectada via bluetooth..
 
-This project was inspired by [limhenry](https://github.com/limhenry/) after reading their [article](https://dev.to/henrylim96/reading-xiaomi-mi-scale-data-with-web-bluetooth-scanning-api-1mb9)
+As medições de peso são registradas em um SGBD Mongo.
 
-![demo](https://github.com/ThomasRog3rs/web-bluetooth-mi-scale/blob/main/demo-image/demo.png?raw=true)
+Para a conexão com a balança usa-se a api [Web BLE](https://developer.chrome.com/articles/bluetooth/). O projeto é compatível com as balanças Xiaomi (MI SCALE2), conforme documentado [em](https://github.com/wiecosystem/Bluetooth/blob/master/doc/devices/huami.health.scale2.md) por [wiecosystem](https://github.com/wiecosystem).
 
-## Project setup
+Esse projeto baseou-se em [limhenry](https://github.com/limhenry/) depois da leitura desse artigo
+
+![demo](demo-image/demo.png?raw=true)
+
+## Projeto setup
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compila e executa para desenvolvimento
 
 ```
 npm run serve
 ```
 
-### Start the json-server
+### Inicia o json-server
 
 ```
 npm run json-server
 ```
 
-### Compiles and minifies for production
+### Compila and minifica para produção
 
 ```
 npm run build
@@ -36,6 +40,6 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
+### Configuração para customização
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Ver [Configuration Reference](https://cli.vuejs.org/config/).

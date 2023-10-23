@@ -8,7 +8,7 @@ export default {
   props: {
     text: {
       type: String,
-      default: "Click Me!",
+      default: "Salvar!",
     },
   },
   methods: {
