@@ -187,7 +187,7 @@ export default {
         .then((device) => {
           bluetoothDeviceDetected = device;
           console.log(bluetoothDeviceDetected);
-          this.connectedDeviceName = bluetoothDeviceDetected.id;
+          this.connectedDeviceName = device.name;
         })
         .catch((err) => {
           console.error("Request device error: " + err);
